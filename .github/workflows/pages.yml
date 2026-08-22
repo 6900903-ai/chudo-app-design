@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
+
   workflow_dispatch:
 
 permissions:
   contents: read
-  actions: read
   pages: write
   id-token: write
 
@@ -17,11 +17,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
     steps:
+
       - name: Checkout
         uses: actions/checkout@v7
 
@@ -31,29 +33,26 @@ jobs:
           node-version: "22"
           cache: npm
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v6
-
       - name: Install dependencies
         run: npm ci
 
-      - name: Build CHUDO static site
-        run: npx next build
+      - name: Build CHUDO GitHub Pages demo
+        run: npx vite build --config vite.pages.config.ts
 
-      - name: Verify CHUDO export
+      - name: Verify CHUDO page
         run: |
-          echo "=== CHUDO STATIC EXPORT ==="
-          find out -maxdepth 3 -type f | sort | head -100
-          echo "=== VERIFY index.html ==="
-          test -f out/index.html
+          test -f pages-dist/index.html
+          echo "CHUDO index.html exists"
+          find pages-dist -maxdepth 2 -type f | sort
 
-      - name: Disable Jekyll
-        run: touch out/.nojekyll
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v6
 
-      - name: Upload Pages artifact
+      - name: Upload CHUDO Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: out
+          path: pages-dist
+
 
   deploy:
     environment:
@@ -64,6 +63,7 @@ jobs:
     needs: build
 
     steps:
-      - name: Deploy CHUDO to GitHub Pages
+
+      - name: Deploy CHUDO
         id: deployment
         uses: actions/deploy-pages@v5
