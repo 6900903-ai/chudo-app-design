@@ -11,7 +11,9 @@ button:focus-visible { outline:3px solid rgba(23,92,255,.3); outline-offset:2px;
 .avatar { position:relative; width:38px; height:38px; border:0; border-radius:50%; background:#dfe9ff; color:#0d3da4; font-size:12px; font-weight:800; }
 .avatar span { position:absolute; width:9px; height:9px; right:0; bottom:0; border:2px solid white; border-radius:50%; background:#17b47d; }
 .brand { display:flex; align-items:center; justify-content:center; gap:8px; letter-spacing:.12em; font-size:13px; }
-.brand i, .action-brand { display:grid; place-items:center; width:29px; height:29px; border-radius:50%; background:linear-gradient(145deg,#ffe58d,#b37411); border:2px solid #f5d56e; color:#14203a; font-style:normal; font-weight:900; box-shadow:0 0 0 3px #c7d4ea, 0 0 12px #78abff; }
+.chudo-logo { display:block; width:100%; height:100%; object-fit:cover; }
+.brand .chudo-logo { width:31px; height:31px; border:2px solid #d9e3f3; border-radius:50%; box-shadow:0 0 12px #78abff; }
+.action-brand { display:grid; place-items:center; width:68px; height:68px; overflow:hidden; border:4px solid #d4dfef; border-radius:50%; box-shadow:0 0 0 4px #f0cf69,0 0 30px #6fa6ff; }
 .icon-button { display:grid; place-items:center; width:40px; height:40px; border:0; background:transparent; color:#38445a; }
 .content { height:100%; overflow-y:auto; padding:78px 0 98px; scrollbar-width:none; }
 .content::-webkit-scrollbar { display:none; }
@@ -61,7 +63,8 @@ button:focus-visible { outline:3px solid rgba(23,92,255,.3); outline-offset:2px;
 .bottom-nav button.active { color:#1353df; }
 .bottom-nav .center-action { color:#1f3157; transform:translateY(-12px); }
 .center-action > span { display:grid; place-items:center; width:56px; height:56px; border-radius:19px; color:#06183e; background:linear-gradient(145deg,#ffe589,#c58a1c); border:4px solid #f8faff; box-shadow:0 7px 20px rgba(20,63,138,.27),0 0 0 1px #d1d9e8; }
-.center-action b { font-size:28px; line-height:1; font-weight:400; }
+.center-action > span .chudo-logo { width:100%; height:100%; border-radius:15px; }
+.center-action b { position:absolute; right:6px; top:3px; display:grid; place-items:center; width:18px; height:18px; border:2px solid white; border-radius:50%; background:#175cff; color:white; font-size:15px; line-height:1; font-weight:500; }
 .center-action em { color:#80600d; font-style:normal; font-size:8px; font-weight:850; letter-spacing:.07em; }
 .placeholder-screen { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px; }
 .placeholder-icon { display:grid; place-items:center; width:74px; height:74px; border-radius:25px; background:#e8f0ff; color:#175cff; }
@@ -69,7 +72,7 @@ button:focus-visible { outline:3px solid rgba(23,92,255,.3); outline-offset:2px;
 .placeholder-screen p { margin:0; max-width:260px; color:var(--muted); font-size:13px; line-height:1.6; }
 .action-screen { position:relative; padding-top:45px; background:radial-gradient(circle at 50% 4%,#e3ecff,transparent 32%); text-align:center; }
 .close-action { position:absolute; right:20px; top:12px; width:38px; height:38px; border:0; border-radius:50%; background:#e9edf5; color:#27334a; font-size:27px; font-weight:300; }
-.action-brand { margin:0 auto; width:66px; height:66px; border-width:4px; font-size:23px; box-shadow:0 0 0 6px #c7d4ea,0 0 30px #6fa6ff; }
+.action-brand { margin:0 auto; }
 .action-screen h1 { margin:25px 0 7px; font-size:25px; letter-spacing:-.03em; }
 .action-screen > p { margin:0 0 25px; color:var(--muted); font-size:12px; }
 .action-list { display:flex; flex-direction:column; gap:9px; text-align:left; }
@@ -136,7 +139,8 @@ button:focus-visible { outline:3px solid rgba(23,92,255,.3); outline-offset:2px;
 
 .wallet-hero { position:relative; overflow:hidden; display:flex; flex-direction:column; align-items:center; padding:20px; border-radius:25px; background:linear-gradient(145deg,#0d1a31,#102d5e); color:white; }
 .wallet-hero:after { content:""; position:absolute; inset:auto -20% -75% 15%; height:190px; border:1px solid rgba(124,170,255,.28); border-radius:50%; box-shadow:0 0 0 24px rgba(93,144,255,.04),0 0 0 48px rgba(93,144,255,.03); }
-.coin-mark { z-index:1; display:grid; place-items:center; width:58px; height:58px; margin-bottom:11px; border:4px solid #f1d36c; border-radius:50%; background:linear-gradient(145deg,#ffe891,#b57415); color:#16213b; font-size:21px; font-weight:900; box-shadow:0 0 0 5px #bfcde2,0 0 24px #4a8eff; }
+.coin-mark { z-index:1; display:grid; place-items:center; width:62px; height:62px; margin-bottom:11px; overflow:hidden; border:4px solid #f1d36c; border-radius:50%; background:#05070a; box-shadow:0 0 0 5px #bfcde2,0 0 24px #4a8eff; }
+.coin-mark .chudo-logo { border-radius:50%; }
 .wallet-hero > span { color:#9eb8e6; font-size:10px; }
 .wallet-hero > strong { z-index:1; margin-top:4px; font-size:28px; letter-spacing:-.04em; }
 .wallet-hero > strong small { color:#cbdaf5; font-size:11px; letter-spacing:.03em; }
@@ -227,7 +231,7 @@ button:focus-visible { outline:3px solid rgba(23,92,255,.3); outline-offset:2px;
 .qr-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; width:100%; height:100%; }
 .qr-grid i { border-radius:2px; background:#e9eef7; }
 .qr-grid i.dark { background:#112958; }
-.qr-coin { position:absolute; inset:50% auto auto 50%; display:grid; place-items:center; width:44px; height:44px; transform:translate(-50%,-50%); border:4px solid white; border-radius:50%; background:linear-gradient(145deg,#ffe58c,#b97616); color:#17213a; font-weight:900; }
+.qr-coin { position:absolute; inset:50% auto auto 50%; display:grid; place-items:center; width:48px; height:48px; overflow:hidden; transform:translate(-50%,-50%); border:4px solid white; border-radius:50%; background:#05070a; box-shadow:0 0 10px rgba(66,139,255,.55); }
 .receive-name { display:block; font-size:13px; }
 .address { margin:5px 0 17px; color:#6d7990; font-family:ui-monospace,monospace; font-size:10px; }
 .sheet-note { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:13px; color:#718097; font-size:9px; }

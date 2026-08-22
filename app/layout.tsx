@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     description: "Связь. Деньги. Свобода. Интерактивный прототип CHUDO.",
     images: ["/og.png"],
   },
-  icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+  icons: { icon: "/chudo-icon.png", shortcut: "/chudo-icon.png", apple: "/chudo-icon.png" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

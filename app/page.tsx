@@ -5,6 +5,10 @@ import { useState } from "react";
 type Tab = "home" | "chats" | "actions" | "wallet" | "security";
 type Modal = null | "send" | "receive" | "scan";
 
+const ChudoLogo = ({ className = "chudo-logo", square = false }: { className?: string; square?: boolean }) => (
+  <img className={className} src={square ? "/chudo-app-icon.webp" : "/chudo-logo.webp"} alt="Логотип CHUDO" />
+);
+
 const Icon = ({ name, size = 22 }: { name: string; size?: number }) => {
   const paths: Record<string, React.ReactNode> = {
     home: <><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5M9 20v-6h6v6"/></>,
@@ -65,7 +69,7 @@ export default function Home() {
       <section className="app-shell" aria-label="Интерактивный прототип приложения CHUDO">
         <header className="topbar">
           <button className="avatar" aria-label="Открыть профиль" onClick={() => notify("Профиль Юрия")}>ЮЧ<span /></button>
-          <div className="brand"><i>C</i><strong>CHUDO</strong></div>
+          <div className="brand"><ChudoLogo/><strong>CHUDO</strong></div>
           <button className="icon-button" aria-label="Уведомления" onClick={() => notify("Новых уведомлений нет")}><Icon name="bell" /></button>
         </header>
 
@@ -80,7 +84,7 @@ export default function Home() {
         <nav className="bottom-nav" aria-label="Главная навигация">
           <button className={tab === "home" ? "active" : ""} onClick={() => go("home")}><Icon name="home"/><span>Главная</span></button>
           <button className={tab === "chats" ? "active" : ""} onClick={() => go("chats")}><Icon name="chat"/><span>Чаты</span></button>
-          <button className="center-action" onClick={() => go("actions")} aria-label="Открыть действия"><span><b>+</b></span><em>CHUDO</em></button>
+          <button className="center-action" onClick={() => go("actions")} aria-label="Открыть действия"><span><ChudoLogo/><b>+</b></span><em>CHUDO</em></button>
           <button className={tab === "wallet" ? "active" : ""} onClick={() => go("wallet")}><Icon name="wallet"/><span>Кошелёк</span></button>
           <button className={tab === "security" ? "active" : ""} onClick={() => go("security")}><Icon name="shield"/><span>Защита</span></button>
         </nav>
@@ -157,7 +161,7 @@ function ChatsScreen({ selectedChat, setSelectedChat, openSend, notify }: { sele
 function WalletScreen({ hidden, setHidden, openSend, openModal }: { hidden:boolean; setHidden:(v:boolean)=>void; openSend:()=>void; openModal:(v:Modal)=>void }) {
   return <div className="screen wallet-screen">
     <div className="screen-heading"><div><small>Ваши средства</small><h1>Кошелёк</h1></div><button onClick={() => setHidden(!hidden)} aria-label="Скрыть баланс"><Icon name="eye"/></button></div>
-    <section className="wallet-hero"><div className="coin-mark">C</div><span>Доступно</span><strong>{hidden ? "••••••" : "12 840,62"}<small> CHUDO</small></strong><em>≈ {hidden ? "••••" : "12 840,62"} EUR · демо-курс</em></section>
+    <section className="wallet-hero"><div className="coin-mark"><ChudoLogo/></div><span>Доступно</span><strong>{hidden ? "••••••" : "12 840,62"}<small> CHUDO</small></strong><em>≈ {hidden ? "••••" : "12 840,62"} EUR · демо-курс</em></section>
     <div className="wallet-actions"><button onClick={openSend}><Icon name="send"/><span>Отправить</span></button><button onClick={() => openModal("receive")}><Icon name="receive"/><span>Получить</span></button><button onClick={() => openModal("scan")}><Icon name="scan"/><span>QR-код</span></button></div>
     <div className="ownership-card"><Icon name="key"/><div><strong>Только вы управляете средствами</strong><span>CHUDO не хранит ключи и не может заморозить баланс</span></div></div>
     <section className="section-block"><div className="section-title"><h2>История</h2><button>Фильтр</button></div><ActivityList /></section>
@@ -183,7 +187,7 @@ function SecurityScreen({ hidden, setHidden, notify }: { hidden:boolean; setHidd
 
 function ActionScreen({ close, go, openSend, openModal }: { close:()=>void; go:(v:Tab)=>void; openSend:()=>void; openModal:(v:Modal)=>void }) {
   return <div className="screen action-screen">
-    <button className="close-action" onClick={close} aria-label="Закрыть">×</button><div className="action-brand">C</div><h1>Что хотите сделать?</h1><p>Деньги и сообщения — в одном безопасном месте</p>
+    <button className="close-action" onClick={close} aria-label="Закрыть">×</button><div className="action-brand"><ChudoLogo/></div><h1>Что хотите сделать?</h1><p>Деньги и сообщения — в одном безопасном месте</p>
     <div className="action-list">
       <button onClick={() => go("chats")}><i><Icon name="chat"/></i><span><strong>Написать</strong><small>Начать защищённый чат</small></span><Icon name="arrow"/></button>
       <button onClick={() => openModal("scan")}><i><Icon name="scan"/></i><span><strong>Сканировать</strong><small>QR-код контакта или платежа</small></span><Icon name="arrow"/></button>
@@ -194,7 +198,7 @@ function ActionScreen({ close, go, openSend, openModal }: { close:()=>void; go:(
 }
 
 function ModalLayer({ modal, close, step, setStep, amount, setAmount, recipient, setRecipient, notify }: { modal:Exclude<Modal,null>; close:()=>void; step:number; setStep:(v:number)=>void; amount:string; setAmount:(v:string)=>void; recipient:string; setRecipient:(v:string)=>void; notify:(v:string)=>void }) {
-  if (modal === "receive") return <div className="modal-backdrop" role="dialog" aria-modal="true"><div className="sheet receive-sheet"><SheetHead title="Получить CHUDO" close={close}/><div className="qr"><div className="qr-grid">{Array.from({length:49},(_,i)=><i key={i} className={[0,1,2,7,9,14,15,16,32,33,34,40,41,42,48,24,30,18].includes(i)?"dark":""}/>)}</div><span className="qr-coin">C</span></div><strong className="receive-name">Юрий Чудинович</strong><p className="address">chudoacct1q7k…9mx4p</p><button className="primary-button" onClick={() => notify("Адрес скопирован")}><Icon name="copy" size={18}/> Скопировать адрес</button><div className="sheet-note"><Icon name="info" size={17}/> Отправляйте на этот адрес только CHUDO</div></div></div>;
+  if (modal === "receive") return <div className="modal-backdrop" role="dialog" aria-modal="true"><div className="sheet receive-sheet"><SheetHead title="Получить CHUDO" close={close}/><div className="qr"><div className="qr-grid">{Array.from({length:49},(_,i)=><i key={i} className={[0,1,2,7,9,14,15,16,32,33,34,40,41,42,48,24,30,18].includes(i)?"dark":""}/>)}</div><span className="qr-coin"><ChudoLogo/></span></div><strong className="receive-name">Юрий Чудинович</strong><p className="address">chudoacct1q7k…9mx4p</p><button className="primary-button" onClick={() => notify("Адрес скопирован")}><Icon name="copy" size={18}/> Скопировать адрес</button><div className="sheet-note"><Icon name="info" size={17}/> Отправляйте на этот адрес только CHUDO</div></div></div>;
   if (modal === "scan") return <div className="modal-backdrop" role="dialog" aria-modal="true"><div className="sheet scan-sheet"><SheetHead title="Сканировать" close={close}/><p>Наведите камеру на QR-код CHUDO</p><div className="scanner"><i/><i/><i/><i/><div className="scan-line"/><div className="scan-mark">C</div></div><button className="secondary-button" onClick={() => notify("Галерея открыта в демо-режиме")}>Выбрать из галереи</button><div className="sheet-note"><Icon name="shield" size={17}/> Перед оплатой вы увидите получателя, сумму и комиссию</div></div></div>;
 
   return <div className="modal-backdrop" role="dialog" aria-modal="true"><div className="sheet send-sheet">
