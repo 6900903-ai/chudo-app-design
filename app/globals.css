@@ -13,6 +13,7 @@ button:focus-visible { outline:3px solid rgba(23,92,255,.3); outline-offset:2px;
 .brand { display:flex; align-items:center; justify-content:center; gap:8px; letter-spacing:.12em; font-size:13px; }
 .chudo-logo { display:block; width:100%; height:100%; object-fit:cover; }
 .brand .chudo-logo { width:31px; height:31px; border:2px solid #d9e3f3; border-radius:50%; box-shadow:0 0 12px #78abff; }
+.brand small { padding:3px 5px; border-radius:6px; background:#102b63; color:#dce9ff; font-size:6px; font-weight:900; letter-spacing:.08em; }
 .action-brand { display:grid; place-items:center; width:68px; height:68px; overflow:hidden; border:4px solid #d4dfef; border-radius:50%; box-shadow:0 0 0 4px #f0cf69,0 0 30px #6fa6ff; }
 .icon-button { display:grid; place-items:center; width:40px; height:40px; border:0; background:transparent; color:#38445a; }
 .content { height:100%; overflow-y:auto; padding:78px 0 98px; scrollbar-width:none; }
@@ -101,6 +102,33 @@ button:focus-visible { outline:3px solid rgba(23,92,255,.3); outline-offset:2px;
 .chat-filter { display:flex; gap:7px; margin:13px 0 8px; overflow-x:auto; }
 .chat-filter button { flex:none; padding:7px 11px; border:0; border-radius:999px; background:#edf1f7; color:#6f7b8f; font-size:10px; font-weight:700; }
 .chat-filter button.active { background:#dfe9ff; color:#1452dc; }
+.communication-tabs,.wallet-tabs { display:grid; grid-template-columns:repeat(2,1fr); gap:5px; margin:0 0 13px; padding:4px; border:1px solid #e0e6f0; border-radius:16px; background:#edf1f7; }
+.communication-tabs button,.wallet-tabs button { display:flex; align-items:center; justify-content:center; gap:5px; padding:9px 6px; border:0; border-radius:12px; background:transparent; color:#778296; font-size:10px; font-weight:800; }
+.communication-tabs button.active,.wallet-tabs button.active { background:white; color:#1556e5; box-shadow:0 4px 12px rgba(20,48,95,.08); }
+.wallet-tabs { grid-template-columns:repeat(3,1fr); }
+.capability-banner { display:grid; grid-template-columns:38px 1fr auto; align-items:center; gap:9px; margin:2px 0 13px; padding:11px; border:1px solid #e7d59f; border-radius:17px; background:#fff9e9; }
+.capability-banner > i { display:grid; place-items:center; width:36px; height:36px; border-radius:12px; background:#ffefbd; color:#8c6100; font-style:normal; }
+.capability-banner > span { display:flex; flex-direction:column; gap:3px; }
+.capability-banner strong { color:#5c450f; font-size:9.5px; }
+.capability-banner small { color:#806e43; font-size:7.7px; line-height:1.4; }
+.capability-banner em { padding:4px 6px; border-radius:7px; background:#7b5b0f; color:white; font-size:6.5px; font-style:normal; font-weight:900; letter-spacing:.08em; }
+.call-actions { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+.call-actions button { display:flex; flex-direction:column; align-items:flex-start; gap:4px; padding:14px; border:1px solid #dce4f0; border-radius:19px; background:linear-gradient(145deg,#fff,#f3f7ff); color:#20304d; text-align:left; }
+.call-actions button > span { display:grid; place-items:center; width:39px; height:39px; margin-bottom:5px; border-radius:13px; background:#dfeaff; color:#175cff; }
+.call-actions strong { font-size:11px; }
+.call-actions small { color:#7a8698; font-size:8px; }
+.call-history-title { margin-top:18px; }
+.call-list { overflow:hidden; border:1px solid var(--line); border-radius:20px; background:white; }
+.call-row { display:grid; grid-template-columns:43px 1fr 34px 34px; align-items:center; gap:8px; padding:11px; }
+.call-row + .call-row { border-top:1px solid #edf0f5; }
+.call-row > span:nth-child(2) { display:flex; flex-direction:column; gap:3px; }
+.call-row strong { font-size:10.5px; }
+.call-row small { color:#7b879a; font-size:8px; }
+.call-row > button { display:grid; place-items:center; width:32px; height:32px; border:0; border-radius:11px; background:#edf3ff; color:#175cff; }
+.recording-disabled { display:grid; grid-template-columns:28px 1fr; gap:7px; margin-top:11px; padding:10px 12px; border:1px dashed #d9dfe8; border-radius:15px; color:#8b95a4; }
+.recording-disabled > span { display:flex; flex-direction:column; gap:2px; }
+.recording-disabled strong { font-size:8.5px; }
+.recording-disabled small { font-size:7.6px; line-height:1.4; }
 .chat-list { overflow:hidden; border:1px solid var(--line); border-radius:21px; background:white; }
 .chat-list > button { width:100%; display:grid; grid-template-columns:46px 1fr auto; align-items:center; gap:11px; padding:13px; border:0; background:white; color:var(--ink); text-align:left; }
 .chat-list > button + button { border-top:1px solid #edf0f5; }
@@ -153,6 +181,65 @@ button:focus-visible { outline:3px solid rgba(23,92,255,.3); outline-offset:2px;
 .ownership-card div { display:flex; flex-direction:column; gap:3px; }
 .ownership-card strong { color:#644b12; font-size:10.5px; }
 .ownership-card span { color:#8a7441; font-size:8.8px; line-height:1.4; }
+.market-screen,.orders-screen { padding-bottom:8px; }
+.pair-card,.order-book,.trade-ticket,.demo-order { overflow:hidden; margin-bottom:12px; padding:14px; border:1px solid var(--line); border-radius:21px; background:white; }
+.pair-head { display:grid; grid-template-columns:42px 1fr auto; align-items:center; gap:9px; }
+.pair-logo { display:grid; place-items:center; width:40px; height:40px; overflow:hidden; border:3px solid #e5c45d; border-radius:50%; background:#05070a; box-shadow:0 0 0 3px #dbe4f3,0 0 13px #6fa8ff; }
+.pair-logo.small { width:34px; height:34px; }
+.pair-head > div { display:flex; flex-direction:column; gap:2px; }
+.pair-head small { color:#8b96a8; font-size:7px; font-weight:850; letter-spacing:.08em; }
+.pair-head strong { font-size:12px; }
+.pair-head button { padding:6px 8px; border:0; border-radius:9px; background:#eef3fc; color:#496385; font-size:8px; font-weight:750; }
+.pair-price { display:flex; align-items:flex-end; justify-content:space-between; margin-top:15px; }
+.pair-price strong { font-size:25px; letter-spacing:-.04em; }
+.pair-price strong small { color:#71809a; font-size:9px; letter-spacing:0; }
+.pair-price > span { color:#99721a; font-size:7.5px; }
+.market-chart { display:block; width:100%; height:92px; margin-top:6px; }
+.chart-period { display:flex; align-items:center; gap:4px; }
+.chart-period button { width:30px; height:25px; border:0; border-radius:8px; background:transparent; color:#8a95a6; font-size:7px; font-weight:800; }
+.chart-period button.active { background:#e5edff; color:#175cff; }
+.chart-period span { margin-left:auto; color:#a37714; font-size:6.5px; font-weight:900; letter-spacing:.08em; }
+.order-book .section-title { margin-bottom:11px; }
+.book-head,.book-row { position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; padding:4px 2px; font-size:8.5px; }
+.book-head { color:#929cad; font-size:7px; }
+.book-head span:last-child,.book-row b { text-align:right; }
+.book-row span,.book-row b { position:relative; z-index:2; font-weight:750; }
+.book-row.ask span { color:#d44e5a; }
+.book-row.bid span { color:#088a62; }
+.book-row i { position:absolute; z-index:0; right:0; top:2px; bottom:2px; border-radius:3px 0 0 3px; opacity:.08; }
+.book-row.ask i { background:#e24d5b; }
+.book-row.bid i { background:#0aa174; }
+.spread { display:flex; align-items:center; justify-content:space-between; margin:4px -14px; padding:7px 16px; background:#f3f6fb; }
+.spread strong { color:#175cff; font-size:12px; }
+.spread span { color:#8591a3; font-size:7px; }
+.trade-side { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-bottom:12px; padding:4px; border-radius:14px; background:#edf1f6; }
+.trade-side button { padding:8px; border:0; border-radius:10px; background:transparent; color:#768296; font-size:9px; font-weight:850; }
+.trade-side .buy.active { background:#def6ec; color:#087a58; }
+.trade-side .sell.active { background:#ffe8ea; color:#bb3745; }
+.trade-ticket label { display:flex; flex-direction:column; gap:5px; margin-top:9px; color:#748095; font-size:8px; font-weight:750; }
+.trade-ticket label > div { position:relative; }
+.trade-ticket input { width:100%; height:44px; padding:0 68px 0 11px; border:1px solid #dfe4ec; border-radius:12px; outline:0; color:#1d2b43; font-size:14px; font-weight:800; }
+.trade-ticket label b { position:absolute; right:11px; top:16px; color:#55709b; font-size:8px; }
+.ticket-total { display:flex; justify-content:space-between; margin:11px 2px; color:#7b879a; font-size:8px; }
+.ticket-total strong { color:#25344e; }
+.trade-ticket p { display:flex; align-items:flex-start; gap:5px; margin:0 0 12px; color:#8a7441; font-size:7.5px; line-height:1.4; }
+.demo-stamp { margin:0 0 13px; padding:7px 9px; border:1px solid #ecd792; border-radius:10px; background:#fff7df; color:#88620a; font-size:7px; font-weight:900; letter-spacing:.08em; text-align:center; }
+.market-modal { left:-20px; right:-20px; top:-130px; bottom:-98px; }
+.reserve-card { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px; }
+.reserve-card > span { display:flex; flex-direction:column; gap:4px; padding:12px; border:1px solid var(--line); border-radius:16px; background:white; }
+.reserve-card small { color:#8691a2; font-size:7px; }
+.reserve-card strong { color:#28364d; font-size:10px; }
+.order-top { display:grid; grid-template-columns:36px 1fr auto; align-items:center; gap:9px; }
+.order-top > span:nth-child(2) { display:flex; flex-direction:column; gap:3px; }
+.order-top strong { font-size:10px; }
+.order-top small { color:#7f8b9e; font-size:8px; }
+.order-top em { padding:5px 6px; border-radius:8px; font-size:6.5px; font-style:normal; font-weight:900; }
+.order-top em.open { background:#fff1c5; color:#86620b; }
+.order-top em.cancelled { background:#edf0f5; color:#6f7b8e; }
+.order-details { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; margin:13px 0; }
+.order-details span { display:flex; flex-direction:column; gap:4px; padding:8px; border-radius:11px; background:#f5f7fa; color:#8a95a7; font-size:6.5px; }
+.order-details b { color:#334059; font-size:7.5px; }
+.orders-foot { display:flex; gap:6px; color:#7e899a; font-size:7.5px; line-height:1.5; }
 
 .secure-badge { display:flex; align-items:center; gap:5px; padding:8px 10px; border-radius:12px; background:#e5f7f0; color:#07825d; font-size:11px; font-weight:800; }
 .security-hero { display:grid; grid-template-columns:74px 1fr; align-items:center; gap:15px; padding:16px; border-radius:22px; background:linear-gradient(115deg,#0c2a64,#1759d4); color:white; }
@@ -275,7 +362,7 @@ button:focus-visible { outline:3px solid rgba(23,92,255,.3); outline-offset:2px;
 .self-video img { width:100%; height:100%; object-fit:cover; opacity:.78; }
 .self-video span { position:absolute; inset:auto 0 0; padding:6px 3px; background:linear-gradient(transparent,rgba(0,0,0,.85)); color:white; font-size:7px; text-align:center; }
 .video-stage.camera-off .self-video img { opacity:.16; filter:grayscale(1); }
-.call-security { z-index:2; display:flex; align-items:center; gap:5px; margin:3px 0 14px; color:#9fb5d7; font-size:8px; }
+.call-security { z-index:2; display:flex; align-items:center; gap:5px; margin:3px 0 14px; padding:6px 9px; border:1px solid rgba(255,255,255,.1); border-radius:999px; background:rgba(255,255,255,.04); color:#9fb5d7; font-size:8px; }
 .call-controls { z-index:2; width:100%; display:flex; align-items:flex-start; justify-content:center; gap:12px; }
 .call-controls button { width:58px; display:flex; flex-direction:column; align-items:center; gap:6px; border:0; background:transparent; color:#d7e3f6; }
 .call-controls button > span { display:grid; place-items:center; width:52px; height:52px; border:1px solid rgba(255,255,255,.16); border-radius:18px; background:rgba(255,255,255,.11); backdrop-filter:blur(15px); }
