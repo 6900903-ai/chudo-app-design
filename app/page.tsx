@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Tab = "home" | "chats" | "actions" | "wallet" | "security";
 type Modal = null | "send" | "receive" | "scan";
+type CallKind = "audio" | "video";
 
 const ChudoLogo = ({ className = "chudo-logo", square = false }: { className?: string; square?: boolean }) => (
   <img className={className} src={square ? "/chudo-app-icon.webp" : "/chudo-logo.webp"} alt="Логотип CHUDO" />
@@ -31,6 +32,11 @@ const Icon = ({ name, size = 22 }: { name: string; size?: number }) => {
     key: <><circle cx="8" cy="15" r="4"/><path d="m11 12 8-8M15 8l2 2M17 6l2 2"/></>,
     cloud: <><path d="M6 18h11a4 4 0 0 0 .7-7.9A6 6 0 0 0 6.3 8.5 4.8 4.8 0 0 0 6 18Z"/><path d="M12 11v7M9 14l3-3 3 3"/></>,
     info: <><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></>,
+    phone: <><path d="M7.2 3.5 4.5 5.2c-.8.5-1.1 1.5-.7 2.4 2.4 6 6.7 10.3 12.7 12.7.9.4 1.9.1 2.4-.7l1.7-2.7-4.6-3-1.7 2.1c-2.7-1.3-5-3.6-6.3-6.3l2.1-1.7-2.9-4.5Z"/></>,
+    video: <><rect x="3" y="6" width="13" height="12" rx="3"/><path d="m16 10 5-3v10l-5-3"/></>,
+    mic: <><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></>,
+    speaker: <><path d="M5 10H2v4h3l5 4V6l-5 4Z"/><path d="M14 9a4 4 0 0 1 0 6M17 6a8 8 0 0 1 0 12"/></>,
+    rotate: <><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6.1 8A7 7 0 0 1 18 6l2 6M17.9 16A7 7 0 0 1 6 18l-2-6"/></>,
   };
   return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>;
 };
@@ -57,6 +63,7 @@ export default function Home() {
   const [recipient, setRecipient] = useState("Александр");
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
+  const [call, setCall] = useState<{ kind: CallKind; name: string } | null>(null);
 
   const openSend = () => { setModal("send"); setSendStep(0); };
   const closeModal = () => { setModal(null); setSendStep(0); };
@@ -75,7 +82,7 @@ export default function Home() {
 
         <div className="content">
           {tab === "home" && <HomeScreen hidden={hidden} setHidden={setHidden} openSend={openSend} openModal={setModal} go={go} />}
-          {tab === "chats" && <ChatsScreen selectedChat={selectedChat} setSelectedChat={setSelectedChat} openSend={openSend} notify={notify} />}
+          {tab === "chats" && <ChatsScreen selectedChat={selectedChat} setSelectedChat={setSelectedChat} openSend={openSend} notify={notify} startCall={(kind, name) => setCall({ kind, name })} />}
           {tab === "wallet" && <WalletScreen hidden={hidden} setHidden={setHidden} openSend={openSend} openModal={setModal} />}
           {tab === "security" && <SecurityScreen hidden={hidden} setHidden={setHidden} notify={notify} />}
           {tab === "actions" && <ActionScreen close={() => go("home")} go={go} openSend={openSend} openModal={setModal} />}
@@ -90,6 +97,7 @@ export default function Home() {
         </nav>
 
         {modal && <ModalLayer modal={modal} close={closeModal} step={sendStep} setStep={setSendStep} amount={amount} setAmount={setAmount} recipient={recipient} setRecipient={setRecipient} notify={notify} />}
+        {call && <CallOverlay call={call} end={() => setCall(null)} />}
         {notice && <div className="toast" role="status"><Icon name="check" size={17}/>{notice}</div>}
       </section>
       <aside className="prototype-note"><span>Интерактивный прототип</span><strong>CHUDO mobile</strong><p>Собственный дизайн: скорость Revolut, понятность IKO и суверенная архитектура CHUDO.</p><div><b /> Нажимайте кнопки — все главные экраны работают.</div></aside>
@@ -134,9 +142,9 @@ function ActivityList() {
   </div>)}</div>;
 }
 
-function ChatsScreen({ selectedChat, setSelectedChat, openSend, notify }: { selectedChat:string|null; setSelectedChat:(v:string|null)=>void; openSend:()=>void; notify:(v:string)=>void }) {
+function ChatsScreen({ selectedChat, setSelectedChat, openSend, notify, startCall }: { selectedChat:string|null; setSelectedChat:(v:string|null)=>void; openSend:()=>void; notify:(v:string)=>void; startCall:(kind:CallKind,name:string)=>void }) {
   if (selectedChat) return <div className="screen chat-detail">
-    <div className="chat-header"><button onClick={() => setSelectedChat(null)} aria-label="Назад"><Icon name="back"/></button><div className="chat-mini-avatar">Ю<span /></div><div><strong>{selectedChat}</strong><small>в сети · защищено</small></div><button onClick={() => notify("Звонки будут добавлены после стабилизации")} aria-label="Позвонить">⌕</button></div>
+    <div className="chat-header"><button onClick={() => setSelectedChat(null)} aria-label="Назад"><Icon name="back"/></button><div className="chat-mini-avatar">{selectedChat[0]}<span /></div><div><strong>{selectedChat}</strong><small>в сети · защищено</small></div><button className="call-start" onClick={() => startCall("audio", selectedChat)} aria-label="Аудиозвонок"><Icon name="phone" size={19}/></button><button className="call-start" onClick={() => startCall("video", selectedChat)} aria-label="Видеозвонок"><Icon name="video" size={19}/></button></div>
     <div className="encryption-note"><Icon name="lock" size={14}/> Сквозное шифрование · прямое соединение</div>
     <div className="messages">
       <div className="bubble received">Привет! Проверяем перевод через CHUDO?<time>10:38</time></div>
@@ -208,6 +216,56 @@ function ModalLayer({ modal, close, step, setStep, amount, setAmount, recipient,
     {step === 2 && <div className="auth-step"><div className="auth-icon"><Icon name="lock" size={34}/></div><h2>Подтвердите на устройстве</h2><p>Android откроет защищённый системный экран. Используйте PIN, рисунок или пароль телефона.</p><div className="exact-operation"><small>ТОЧНАЯ ОПЕРАЦИЯ</small><strong>{amount} CHUDO → {recipient}</strong><span>Одно подтверждение действует только для этого перевода</span></div><button className="primary-button" onClick={()=>setStep(3)}>Имитировать подтверждение</button><button className="text-button" onClick={close}>Отменить</button></div>}
     {step === 3 && <div className="success-step"><div className="success-check"><Icon name="check" size={42}/></div><h2>Перевод отправлен</h2><p>{amount} CHUDO для {recipient}</p><div className="receipt"><span>Статус<b>Подтверждено сетью</b></span><span>Комиссия<b>0,02 CHUDO</b></span><span>Квитанция<b>CHD-8F21-A7</b></span></div><button className="primary-button" onClick={close}>Готово</button></div>}
   </div></div>;
+}
+
+function CallOverlay({ call, end }: { call:{ kind:CallKind; name:string }; end:()=>void }) {
+  const [connected, setConnected] = useState(false);
+  const [seconds, setSeconds] = useState(0);
+  const [muted, setMuted] = useState(false);
+  const [speaker, setSpeaker] = useState(true);
+  const [camera, setCamera] = useState(call.kind === "video");
+  const [frontCamera, setFrontCamera] = useState(true);
+
+  useEffect(() => {
+    const connectTimer = window.setTimeout(() => setConnected(true), 1100);
+    return () => window.clearTimeout(connectTimer);
+  }, []);
+
+  useEffect(() => {
+    if (!connected) return;
+    const timer = window.setInterval(() => setSeconds(value => value + 1), 1000);
+    return () => window.clearInterval(timer);
+  }, [connected]);
+
+  const time = `${String(Math.floor(seconds / 60)).padStart(2,"0")}:${String(seconds % 60).padStart(2,"0")}`;
+
+  return <div className={`call-overlay ${call.kind}`} role="dialog" aria-modal="true" aria-label={call.kind === "video" ? "Видеозвонок" : "Аудиозвонок"}>
+    <div className="call-glow" />
+    <div className="call-topline"><span><Icon name="lock" size={14}/> Защищённый звонок</span><em>ДЕМО</em></div>
+
+    {call.kind === "video" ? <div className={`video-stage ${camera ? "camera-on" : "camera-off"}`}>
+      <div className="remote-video">
+        <ChudoLogo className="remote-logo" square/>
+        <div><strong>{call.name}</strong><span>{connected ? time : "Соединение…"}</span></div>
+      </div>
+      <div className="self-video"><ChudoLogo square/><span>Вы · {frontCamera ? "передняя" : "основная"}</span></div>
+    </div> : <div className="audio-stage">
+      <div className="call-avatar"><ChudoLogo/></div>
+      <h2>{call.name}</h2>
+      <p>{connected ? time : "Устанавливаем прямое соединение…"}</p>
+      <div className="audio-pulse"><i/><i/><i/><i/><i/></div>
+    </div>}
+
+    <div className="call-security"><Icon name="shield" size={15}/> Сквозное шифрование · CHUDO не слышит разговор</div>
+    <div className="call-controls">
+      <button className={muted ? "off" : ""} onClick={() => setMuted(!muted)} aria-label={muted ? "Включить микрофон" : "Выключить микрофон"}><span><Icon name="mic"/></span><small>{muted ? "Включить" : "Микрофон"}</small></button>
+      {call.kind === "video" && <button className={!camera ? "off" : ""} onClick={() => setCamera(!camera)} aria-label="Камера"><span><Icon name="video"/></span><small>Камера</small></button>}
+      {call.kind === "video" && <button onClick={() => setFrontCamera(!frontCamera)} aria-label="Сменить камеру"><span><Icon name="rotate"/></span><small>Повернуть</small></button>}
+      <button className={!speaker ? "off" : ""} onClick={() => setSpeaker(!speaker)} aria-label="Динамик"><span><Icon name="speaker"/></span><small>Динамик</small></button>
+      <button className="hangup" onClick={end} aria-label="Завершить звонок"><span><Icon name="phone"/></span><small>Завершить</small></button>
+    </div>
+    <p className="call-demo-note">Интерактивная демонстрация интерфейса. Реальный защищённый медиаканал пока не подключён.</p>
+  </div>;
 }
 
 function SheetHead({ title, close }: { title:string; close:()=>void }) { return <div className="sheet-head"><h2>{title}</h2><button onClick={close} aria-label="Закрыть">×</button></div>; }
