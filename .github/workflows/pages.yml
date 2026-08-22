@@ -18,13 +18,14 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "22"
           cache: npm
@@ -36,10 +37,14 @@ jobs:
         run: npm ci
 
       - name: Build CHUDO static demo
-        run: npm run build
+        run: npx vinext build --prerender-all
 
       - name: Verify static export
-        run: test -f dist/client/index.html
+        run: |
+          echo "=== GENERATED HTML FILES ==="
+          find dist/client -maxdepth 4 -type f -name '*.html' -print
+          echo "=== CHECK ROOT INDEX ==="
+          test -f dist/client/index.html
 
       - name: Disable Jekyll
         run: touch dist/client/.nojekyll
