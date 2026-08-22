@@ -15,7 +15,7 @@ const capabilities = {
 } as const;
 
 const ChudoLogo = ({ className = "chudo-logo", square = false }: { className?: string; square?: boolean }) => (
-  <img className={className} src={square ? "/chudo-app-icon.webp" : "/chudo-logo.webp"} alt="Логотип CHUDO" />
+  <img className={className} src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${square ? "/chudo-app-icon.webp" : "/chudo-logo.webp"}`} alt="Логотип CHUDO" />
 );
 
 const Icon = ({ name, size = 22 }: { name: string; size?: number }) => {
@@ -347,3 +347,4 @@ function SheetHead({ title, close }: { title:string; close:()=>void }) { return 
 function CapabilityBanner({ icon, title, text }: { icon:string; title:string; text:string }) {
   return <div className="capability-banner"><i><Icon name={icon} size={18}/></i><span><strong>{title}</strong><small>{text}</small></span><em>ДЕМО</em></div>;
 }
+
