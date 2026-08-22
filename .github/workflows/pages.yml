@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 
@@ -22,7 +23,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup Node
         uses: actions/setup-node@v7
@@ -31,28 +32,28 @@ jobs:
           cache: npm
 
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build CHUDO static demo
-        run: npx vinext build --prerender-all
+      - name: Build CHUDO static site
+        run: npx next build
 
-      - name: Verify static export
+      - name: Verify CHUDO export
         run: |
-          echo "=== GENERATED HTML FILES ==="
-          find dist/client -maxdepth 4 -type f -name '*.html' -print
-          echo "=== CHECK ROOT INDEX ==="
-          test -f dist/client/index.html
+          echo "=== CHUDO STATIC EXPORT ==="
+          find out -maxdepth 3 -type f | sort | head -100
+          echo "=== VERIFY index.html ==="
+          test -f out/index.html
 
       - name: Disable Jekyll
-        run: touch dist/client/.nojekyll
+        run: touch out/.nojekyll
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
-          path: dist/client
+          path: out
 
   deploy:
     environment:
@@ -63,6 +64,6 @@ jobs:
     needs: build
 
     steps:
-      - name: Deploy GitHub Pages
+      - name: Deploy CHUDO to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
