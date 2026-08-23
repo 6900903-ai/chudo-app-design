@@ -28,6 +28,8 @@ test("renders the CHUDO demo shell", async () => {
   );
   const html = await response.text();
   assert.match(html, /CHUDO/);
-  assert.match(html, /ДЕМО/);
-  assert.match(html, /Интерактивный прототип приложения CHUDO/);
+  assert.match(html, /PUBLIC DEMO/);
+  assert.match(html, /BACKEND NOT CONNECTED/);
+  assert.match(html, /data-screen-id="01\.02"/);
+  assert.match(html, /Связь и деньги/);
 });
