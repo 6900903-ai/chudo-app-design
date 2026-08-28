@@ -4,7 +4,9 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   root: "github-pages",
 
-  base: "/chudo-app-design/",
+  // Use relative asset paths so the same build works both on
+  // 6900903-ai.github.io/chudo-app-design/ and on chudocoin.pp.ua.
+  base: "./",
 
   publicDir: "../public",
 
@@ -14,7 +16,7 @@ export default defineConfig({
 
   define: {
     "process.env.NEXT_PUBLIC_BASE_PATH":
-      JSON.stringify("/chudo-app-design"),
+      JSON.stringify("."),
   },
 
   build: {
